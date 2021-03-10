@@ -26,6 +26,23 @@ public class WorkoverCandidate {
                     .reversed();
 
     @Override
+    public boolean equals(Object o) {
+        if(o == this)
+            return true;
+        if(!(o instanceof WorkoverCandidate))
+            return false;
+        WorkoverCandidate wc = (WorkoverCandidate) o;
+        return wc.wellNumber == wellNumber && wc.netPay == netPay;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Integer.hashCode(wellNumber);
+        result = 31 * result + Integer.hashCode(netPay);
+        return result;
+    }
+    
+    @Override
     public String toString() {
         return Integer.toString(wellNumber);
     }
