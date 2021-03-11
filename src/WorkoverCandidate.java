@@ -7,12 +7,21 @@ public class WorkoverCandidate {
     private final int adjacentInjectors;
     private final double porosity;
 
+    // Prohibit instantiation outside of static factory
     private WorkoverCandidate(int number, int footage,
                               int injs, double poro) {
         wellNumber = number;
         netPay = footage;
         adjacentInjectors = injs;
         porosity = poro;
+    }
+
+    public static WorkoverCandidate add(int number, int footage,
+                                        int injs, double poro) {
+        if(poro > 0.3 || poro < 0.0)
+            throw new IllegalStateException("Porosity values unrealistic. Please modify and try again.");
+        else
+            return new WorkoverCandidate(number, footage, injs, poro);
     }
 
     private int getNetPay()      { return netPay;            }
@@ -41,12 +50,13 @@ public class WorkoverCandidate {
         result = 31 * result + Integer.hashCode(netPay);
         return result;
     }
-    
+
     @Override
     public String toString() {
         return Integer.toString(wellNumber);
     }
 
+    // Example client code
     public static void main(String[] args) {
         List<WorkoverCandidate> wells = new ArrayList<>();
 
