@@ -13,7 +13,7 @@ public class Volumetrics {
         double value = BBLS * area * thickness * oilSaturation * porosity;
         value /= volumeFactor;
 
-        return Math.round(value * 100.0) / 100.0;
+        return Math.round(value * 100) / 100.0;
     }
 
     public static double gasInPlace(double area, int thickness,
@@ -23,7 +23,7 @@ public class Volumetrics {
         double value = MCF * area * thickness * gasSaturation * gasSaturation * porosity;
         value /= volumeFactor;
 
-        return Math.round(value * 100.0) / 100.0;
+        return Math.round(value * 100) / 100.0;
     }
 
     // Generally only used to evaluate potential for water disposal, or as an academic exercise
@@ -32,6 +32,6 @@ public class Volumetrics {
 
         double value = BBLS * area * thickness * porosity;
 
-        return Math.round(value * 100.0) / 100.0;
+        return Math.round(value * 100) / 100.0;
     }
 }

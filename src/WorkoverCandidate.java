@@ -24,9 +24,9 @@ public class WorkoverCandidate {
             return new WorkoverCandidate(number, footage, injs, poro);
     }
 
-    private int getNetPay()      { return netPay;            }
-    private int getAdjacent()    { return adjacentInjectors; }
-    private double getPorosity() { return porosity;          }
+    public int getNetPay()      { return netPay;            }
+    public int getAdjacent()    { return adjacentInjectors; }
+    public double getPorosity() { return porosity;          }
 
     public static final Comparator<WorkoverCandidate> COMPLETION_ORDER =
             comparingInt(WorkoverCandidate::getAdjacent)

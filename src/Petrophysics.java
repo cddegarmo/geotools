@@ -16,6 +16,6 @@ public class Petrophysics {
         double value = rw / (Math.pow(phi, m) * rf);
         value = Math.pow(value, (1 / n));
 
-        return Math.round(value * 100.0) / 100.0;
+        return Math.round(value * 100) / 100.0;
     }
 }
