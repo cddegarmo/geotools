@@ -1,3 +1,5 @@
+package appclasses;
+
 import java.util.*;
 import static java.util.Comparator.*;
 
@@ -24,6 +26,7 @@ public class WorkoverCandidate {
             return new WorkoverCandidate(number, footage, injs, poro);
     }
 
+    public int getWellNumber()  { return wellNumber;        }
     public int getNetPay()      { return netPay;            }
     public int getAdjacent()    { return adjacentInjectors; }
     public double getPorosity() { return porosity;          }
