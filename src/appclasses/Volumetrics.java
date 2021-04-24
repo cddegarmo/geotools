@@ -1,3 +1,4 @@
+package appclasses;
 
 public class Volumetrics {
     public static final int BBLS = 7758;  // barrels (42 gallon) per acre-foot

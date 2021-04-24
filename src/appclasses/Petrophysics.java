@@ -1,3 +1,5 @@
+package appclasses;
+
 public class Petrophysics {
 
     private Petrophysics() {}
