@@ -3,6 +3,8 @@ package user;
 import appclasses.Petrophysics;
 import java.util.Scanner;
 
+// Program run from command line to get a quick calculation of water saturation via
+// Archie equation
 public class WaterSaturation {
    public static void main(String[] args) {
       Scanner s = new Scanner(System.in);

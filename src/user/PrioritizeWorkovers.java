@@ -7,6 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+// Program is designed for a relatively short list of candidates
+// to evaluate
+// Future version will be capable of reading these data from a csv,
+// capable of evaluating a large number of wells
 public class PrioritizeWorkovers {
     public static void main(String[] args) {
         var in = new Scanner(System.in);

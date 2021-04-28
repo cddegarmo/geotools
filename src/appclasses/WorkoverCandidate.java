@@ -9,7 +9,7 @@ public class WorkoverCandidate {
     private final int adjacentInjectors;
     private final double porosity;
 
-    // Prohibit instantiation outside of static factory
+    // Force static factory, prohibit subclassing
     private WorkoverCandidate(int number, int footage,
                               int injs, double poro) {
         wellNumber = number;
@@ -31,6 +31,8 @@ public class WorkoverCandidate {
     public int getAdjacent()    { return adjacentInjectors; }
     public double getPorosity() { return porosity;          }
 
+    // Comparator serves as main tool for sorting these candidates
+    // Future versions may incorporate various sorting criteria
     public static final Comparator<WorkoverCandidate> COMPLETION_ORDER =
             comparingInt(WorkoverCandidate::getAdjacent)
             .thenComparingInt(WorkoverCandidate::getNetPay)
