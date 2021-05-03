@@ -19,6 +19,8 @@ public class WaterSaturation {
       System.out.print("Enter the formation resistivity: ");
       double rf = s.nextDouble();
       double result = Petrophysics.waterSaturation(n, rw, phi, m, rf);
+      if (result < 0 || result > 1)
+         System.out.println("Check parameters for validity. Result computed as negative or greater than one.");
       System.out.println(result);
    }
 }
