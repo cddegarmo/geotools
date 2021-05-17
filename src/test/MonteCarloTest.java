@@ -17,8 +17,11 @@ public class MonteCarloTest {
 
    @Test
    public void testParameters() {
-      assertThrows(IllegalArgumentException.class,
-                   () -> MonteCarlo.runSpinner(100));
+      assertAll(
+           () -> assertThrows(IllegalArgumentException.class,
+                              () -> MonteCarlo.runSpinner(100)),
+           () -> assertThrows(IllegalArgumentException.class,
+                              () -> MonteCarlo.runSpinner(0)));
    }
 
    @Test
