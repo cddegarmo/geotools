@@ -1,6 +1,7 @@
 package appclasses;
 
 import static appclasses.MonteCarlo.*;
+import java.util.*;
 
 public class Volumetrics {
     public static final int BBLS = 7758;  // barrels (42 gallon) per acre-foot
@@ -27,6 +28,15 @@ public class Volumetrics {
         double saturation = getRandDouble(satLow, satHigh);
         double porosity = getRandDouble(porLow, porHigh);
         double volumeFactor = getRandDouble(vfLow, vfHigh);
+        return oilInPlace(area, thickness, saturation, porosity, volumeFactor);
+    }
+
+    public static double oilInPlaceMCCast(List<? extends Number> parameters) {
+        double area = getRandDouble((Double) parameters.get(0), (Double) parameters.get(1));
+        int thickness = getRandInt((Integer) parameters.get(2), (Integer) parameters.get(3));
+        double saturation = getRandDouble((Double) parameters.get(4), (Double) parameters.get(5));
+        double porosity = getRandDouble((Double) parameters.get(6), (Double) parameters.get(7));
+        double volumeFactor = getRandDouble((Double) parameters.get(8), (Double) parameters.get(9));
         return oilInPlace(area, thickness, saturation, porosity, volumeFactor);
     }
 
@@ -58,11 +68,5 @@ public class Volumetrics {
         double value = BBLS * area * thickness * porosity;
 
         return Math.round(value * 100) / 100.0;
-    }
-
-    public static void main(String[] args) {
-        double result = oilInPlace(300, 25, 0.7, 0.15, 1.12);
-        System.out.println(result);
-        System.out.printf("%,.2f", result);
     }
 }
