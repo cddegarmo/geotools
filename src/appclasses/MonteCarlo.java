@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MonteCarlo {
 
    // This method can be used as a tool to test for success or failure
-   // of an event, returning 1 for success or 0 for failure.
+   // of an event, returning 1 (for success) or 0.
    // Ideally this should be useful for evaluating the average result with
    // many tens or hundreds of runs.
    public static int runSpinner(int chance) {
@@ -15,8 +15,7 @@ public class MonteCarlo {
       if (probability <= chance) {
          System.out.println("Success!");
          return 1;
-      }
-      else {
+      } else {
          System.out.println("Failure");
          return 0;
       }
