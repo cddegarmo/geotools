@@ -8,7 +8,7 @@ public class Petrophysics {
      * Calculates water saturation of a reservoir via Archie's equation.
      * @param n   saturation exponent
      * @param rw  formation water resistivity
-     * @param phi porosity
+     * @param phi porosity (in decimal)
      * @param m   cementation exponent
      * @param rf  formation resistivity
      * @return double water saturation, in range 0 to 1.
@@ -18,6 +18,9 @@ public class Petrophysics {
         double value = rw / (Math.pow(phi, m) * rf);
         value = Math.pow(value, (1 / n));
 
-        return Math.round(value * 100) / 100.0;
+        double result = Math.round(value * 100) / 100.0;
+        if (result < 0 || result > 1)
+            throw new IllegalArgumentException("Check parameters for validity.");
+        return result;
     }
 }
