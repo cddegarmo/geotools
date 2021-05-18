@@ -4,9 +4,7 @@ import appclasses.Volumetrics;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.text.MessageFormat;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.util.*;
 
 public class RunVolumes {
@@ -14,12 +12,10 @@ public class RunVolumes {
    // Formatter serves to parse parameters from csv file
    private static class ParameterFormatter {
       private final ResourceBundle resource;
-      private final MessageFormat parameters;
       private final Path dataFolder;
 
       private ParameterFormatter() {
          resource = ResourceBundle.getBundle("resources.parameters");
-         parameters = new MessageFormat(resource.getString("inputs"));
          Path current = Path.of("").toAbsolutePath();
          dataFolder = current.resolve(resource.getString("data.folder"));
       }
@@ -31,18 +27,16 @@ public class RunVolumes {
    private RunVolumes() {}
 
    private static List<Number> parseParameters(String text) {
+      if (text == null)
+         throw new IllegalArgumentException("Check csv file for proper contents.");
       List<Number> container = new ArrayList<>();
-      try {
-         Object[] values = pf.parameters.parse(text);
-         for (int i = 0; i < values.length; i++) {
-            if (i == 2 || i == 3) {
-               container.add(Integer.parseInt((String) values[i]));
-               continue;
-            }
-            container.add(Double.parseDouble((String) values[i]));
+      String[] values = text.split(",");
+      for (int i = 0; i < values.length; i++) {
+         if (i == 2 || i == 3) {
+            container.add(Integer.parseInt(values[i]));
+            continue;
          }
-      } catch (ParseException e) {
-         e.printStackTrace();
+         container.add(Double.parseDouble(values[i]));
       }
       return container;
    }
