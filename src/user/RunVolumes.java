@@ -57,12 +57,17 @@ public class RunVolumes {
       Path file = pf.dataFolder.resolve(
            pf.resource.getString("data.file"));
       List<Number> parameters = parseParameters(loadParameters(file));
+      List<Double> results = new ArrayList<>();
       Scanner s = new Scanner(System.in);
       System.out.print("How many runs would you like to conduct? ");
       int runs = Integer.parseInt(s.nextLine());
       for (int i = 0; i < runs; i++) {
          double result = Volumetrics.oilInPlaceMCCast(parameters);
+         results.add(result);
          System.out.printf("%,.2f%n", result);
       }
+      Collections.sort(results);
+      System.out.print("P50 value of results: ");
+      System.out.printf("%,.2f%n",results.get(results.size() / 2));
    }
 }
