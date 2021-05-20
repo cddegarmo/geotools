@@ -15,7 +15,7 @@ public class RunVolumes {
       private final Path dataFolder;
 
       private ParameterFormatter() {
-         resource = ResourceBundle.getBundle("resources.parameters");
+         resource = ResourceBundle.getBundle("resources.config");
          Path current = Path.of("").toAbsolutePath();
          dataFolder = current.resolve(resource.getString("data.folder"));
       }
