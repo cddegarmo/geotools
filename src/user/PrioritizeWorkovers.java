@@ -12,7 +12,8 @@ import java.util.Scanner;
 // Future version will be capable of reading these data from a csv,
 // capable of evaluating a large number of wells
 public class PrioritizeWorkovers {
-    public static void main(String[] args) {
+
+    private static void userInput() {
         var in = new Scanner(System.in);
         List<WorkoverCandidate> wells = new ArrayList<>();
         do {
@@ -32,5 +33,9 @@ public class PrioritizeWorkovers {
         System.out.println("Wells should be completed in the following order:");
         for (WorkoverCandidate well : wells)
             System.out.println(well.getWellNumber());
+    }
+
+    public static void main(String[] args) {
+
     }
 }
