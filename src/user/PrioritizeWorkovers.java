@@ -56,10 +56,11 @@ public class PrioritizeWorkovers {
     private static void inputFromFile() {
         Path file = wf.dataFolder.resolve(wf.resource.getString("workovers.file"));
         List<WorkoverCandidate> wells = getCandidates(file);
-        Collections.sort(wells, WorkoverCandidate.COMPLETION_ORDER);
+        Collections.sort(wells, WorkoverCandidate.WEIGHTED_ORDER);
         System.out.println("Wells should be completed in the following order: ");
-        for (WorkoverCandidate well : wells)
+        for (WorkoverCandidate well : wells) {
             System.out.println(well.getWellNumber());
+        }
     }
 
     private static void userInput() {
