@@ -8,16 +8,7 @@ public class WorkoverCandidate {
     private final int netPay;
     private final int adjacentInjectors;
     private final double porosity;
-    private final double waterSaturation;
-
-    // Force static factory, prohibit subclassing
-    private WorkoverCandidate(int number, int footage,
-                              int injs, double poro) {
-        wellNumber = number;
-        netPay = footage;
-        adjacentInjectors = injs;
-        porosity = poro;
-    }
+    private double waterSaturation;
 
     // Force static factory, prohibit subclassing
     private WorkoverCandidate(int number, int footage,
@@ -27,6 +18,15 @@ public class WorkoverCandidate {
         adjacentInjectors = injs;
         porosity = poro;
         waterSaturation = sw;
+    }
+
+    // Force static factory, prohibit subclassing
+    private WorkoverCandidate(int number, int footage,
+                              int injs, double poro) {
+        wellNumber = number;
+        netPay = footage;
+        adjacentInjectors = injs;
+        porosity = poro;
     }
 
     public static WorkoverCandidate add(int number, int footage,
@@ -66,7 +66,7 @@ public class WorkoverCandidate {
             comparingDouble(WorkoverCandidate::getScore)
             .reversed();
 
-    public final double getScore() {
+    private final double getScore() {
         double result = (injRank() * 0.2) +
                      (porosityRank() * 0.35) +
                      (netPayRank() * 0.45);
@@ -127,10 +127,6 @@ public class WorkoverCandidate {
             if (ranges.get(score) == range)
                 result = score;
         return result;
-    }
-
-    private int waterSaturationRank() {
-
     }
 
     @Override
