@@ -8,6 +8,7 @@ public class WorkoverCandidate {
     private final int netPay;
     private final int adjacentInjectors;
     private final double porosity;
+    private final double waterSaturation;
 
     // Force static factory, prohibit subclassing
     private WorkoverCandidate(int number, int footage,
@@ -18,18 +19,39 @@ public class WorkoverCandidate {
         porosity = poro;
     }
 
+    // Force static factory, prohibit subclassing
+    private WorkoverCandidate(int number, int footage,
+                              int injs, double poro, double sw) {
+        wellNumber = number;
+        netPay = footage;
+        adjacentInjectors = injs;
+        porosity = poro;
+        waterSaturation = sw;
+    }
+
     public static WorkoverCandidate add(int number, int footage,
                                         int injs, double poro) {
-        if(poro > 0.3 || poro < 0.0)
+        if(porosityUnrealistic(poro))
             throw new IllegalStateException("Porosity values unrealistic. Please modify and try again.");
         else
             return new WorkoverCandidate(number, footage, injs, poro);
     }
 
-    public int getWellNumber()  { return wellNumber;        }
-    public int getNetPay()      { return netPay;            }
-    public int getAdjacent()    { return adjacentInjectors; }
-    public double getPorosity() { return porosity;          }
+    public static WorkoverCandidate add(int number, int footage,
+                                        int injs, double poro, double sw) {
+        if(porosityUnrealistic(poro))
+            throw new IllegalStateException("Porosity values unrealistic. Please modify and try again.");
+        else if(waterSaturationUnrealistic(sw))
+            throw new IllegalStateException("Water saturation value unrealistic. Please modify and try again");
+        else
+            return new WorkoverCandidate(number, footage, injs, poro, sw);
+    }
+
+    public int getWellNumber()         { return wellNumber;        }
+    public int getNetPay()             { return netPay;            }
+    public int getAdjacent()           { return adjacentInjectors; }
+    public double getPorosity()        { return porosity;          }
+    public double getWaterSaturation() { return waterSaturation;   }
 
     // Comparators serve as main tool for sorting these candidates
     // Comparator #1
@@ -53,6 +75,18 @@ public class WorkoverCandidate {
 
     private int injRank() {
         return adjacentInjectors;
+    }
+
+    private static boolean porosityUnrealistic(double porosity) {
+        if (porosity > 0.3 || porosity < 0.0)
+            return true;
+        return false;
+    }
+
+    private static boolean waterSaturationUnrealistic(double waterSaturation) {
+        if (waterSaturation > 1.0 || waterSaturation < 0.01)
+            return true;
+        return false;
     }
 
     private int porosityRank() {
@@ -93,6 +127,10 @@ public class WorkoverCandidate {
             if (ranges.get(score) == range)
                 result = score;
         return result;
+    }
+
+    private int waterSaturationRank() {
+
     }
 
     @Override
