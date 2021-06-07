@@ -66,6 +66,8 @@ public class WorkoverCandidate {
             comparingDouble(WorkoverCandidate::getScore)
             .reversed();
 
+    // ADD WATER SATURATION TO THIS
+
     private final double getScore() {
         double result = (injRank() * 0.2) +
                      (porosityRank() * 0.35) +
@@ -128,6 +130,8 @@ public class WorkoverCandidate {
                 result = score;
         return result;
     }
+
+    // NEED WATER SATURATION SCORE CALCULATOR
 
     @Override
     public boolean equals(Object o) {
