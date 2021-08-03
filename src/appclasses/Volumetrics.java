@@ -69,4 +69,21 @@ public class Volumetrics {
 
         return Math.round(value * 100) / 100.0;
     }
+
+    // Normalize all production volumes to 1-mile lateral
+    private static double getLengthFactor(int lateralLength) {
+         return Math.round(lateralLength * 1_000) / 5_280.0;
+    }
+
+    // Rough calculation of remaining reserves in a conventional well
+    private static int getRemainingVolume(int lastYearProduction) {
+        return lastYearProduction * 7;
+    }
+
+    // Calculate EUR of a well by summing the cumulative production with remaining potential
+    public static int calculateEUR(int cumulativeProduction, int lastYearProduction,
+                                   int lateralLength) {
+        int totalProduction = cumulativeProduction + getRemainingVolume(lastYearProduction);
+        return (int) (totalProduction / getLengthFactor(lateralLength));
+    }
 }
