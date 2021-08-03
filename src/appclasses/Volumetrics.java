@@ -6,6 +6,7 @@ import java.util.*;
 public class Volumetrics {
     public static final int BBLS = 7758;  // barrels (42 gallon) per acre-foot
     public static final int MCF = 43560;  // cubic feet of gas per acre-foot
+    public static final double MILE = 5280.0;  // one mile in feet
 
     // Prohibit instantiation
     private Volumetrics() {}
@@ -72,7 +73,7 @@ public class Volumetrics {
 
     // Normalize all production volumes to 1-mile lateral
     private static double getLengthFactor(int lateralLength) {
-         return Math.round(lateralLength * 1_000) / 5_280.0;
+         return Math.round(lateralLength * 1_000) / MILE;
     }
 
     // Rough calculation of remaining reserves in a conventional well
