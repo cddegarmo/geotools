@@ -81,6 +81,7 @@ public class Volumetrics {
     }
 
     // Calculate EUR of a well by summing the cumulative production with remaining potential
+    // normalized to lateral length
     public static int calculateEUR(int cumulativeProduction, int lastYearProduction,
                                    int lateralLength) {
         int totalProduction = cumulativeProduction + getRemainingVolume(lastYearProduction);
