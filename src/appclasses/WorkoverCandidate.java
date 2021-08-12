@@ -55,6 +55,8 @@ public class WorkoverCandidate {
 
     // Comparators serve as main tool for sorting these candidates
     // Comparator #1
+    // Sort without water saturation influence, importance is placed heavily
+    // on number of adjacent injectors
     public static final Comparator<WorkoverCandidate> COMPLETION_ORDER =
             comparingInt(WorkoverCandidate::getAdjacent)
             .thenComparingInt(WorkoverCandidate::getNetPay)
@@ -62,16 +64,18 @@ public class WorkoverCandidate {
                     .reversed();
 
     // Comparator #2
+    // Use weighted sorting, incorporating all fields of class. Should be
+    // modified on a field-by-field basis
     public static final Comparator<WorkoverCandidate> WEIGHTED_ORDER =
             comparingDouble(WorkoverCandidate::getScore)
             .reversed();
 
-    // ADD WATER SATURATION TO THIS
 
     private final double getScore() {
-        double result = (injRank() * 0.2) +
-                     (porosityRank() * 0.35) +
-                     (netPayRank() * 0.45);
+        double result = (injRank() * 0.25) +
+                     (porosityRank() * 0.25) +
+                     (netPayRank() * 0.2) +
+                     (waterSaturationRank() * 0.3);
         return Math.round(result * 100) / 100.0;
     }
 
@@ -132,7 +136,27 @@ public class WorkoverCandidate {
     }
 
     // NEED WATER SATURATION SCORE CALCULATOR
+    private int waterSaturationRank() {
+        Map<Integer, List<Double>> ranges = new HashMap<>();
+        ranges.put(1, List.of(1.0, 0.8));
+        ranges.put(2, List.of(0.79, 0.6));
+        ranges.put(3, List.of(0.59, 0.4));
+        ranges.put(4, List.of(0.39, 0.2));
+        ranges.put(5, List.of(0.19, 0.0));
+        List<Double> range = ranges.values()
+             .stream()
+             .filter(list -> waterSaturation <= list.get(1) &&
+                  waterSaturation >= list.get(0))
+             .findAny()
+             .orElse(new ArrayList<>());
+        int result = 0;
+        for (Integer score : ranges.keySet())
+            if (ranges.get(score) == range)
+                result = score;
+        return result;
+    }  
 
+    // Standard overrides of methods inherited from Object
     @Override
     public boolean equals(Object o) {
         if(o == this)
