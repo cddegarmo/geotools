@@ -4,8 +4,8 @@ import static appclasses.MonteCarlo.*;
 import java.util.*;
 
 public class Volumetrics {
-    public static final int BBLS = 7758;  // barrels (42 gallon) per acre-foot
-    public static final int MCF = 43560;  // cubic feet of gas per acre-foot
+    public static final int BBLS = 7758;       // barrels (42 gallon) per acre-foot
+    public static final int MCF = 43560;       // cubic feet of gas per acre-foot
     public static final double MILE = 5280.0;  // one mile in feet
 
     // Prohibit instantiation
