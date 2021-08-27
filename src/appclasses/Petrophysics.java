@@ -16,6 +16,8 @@ public class Petrophysics {
     public static double waterSaturation(double n, double rw, double phi,
                                          double m, double rf) {
         double value = rw / (Math.pow(phi, m) * rf);
+        if (value < 0)
+            throw new IllegalArgumentException("Negative parameters are invalid for this calculation");
         value = Math.pow(value, (1 / n));
 
         double result = Math.round(value * 100) / 100.0;
