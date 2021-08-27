@@ -24,13 +24,6 @@ public class MonteCarlo {
    // This group of methods serves to reduce verbosity in other parts of the program
    // by eliminating the need to type out the full method signature to generate a
    // thread-safe random number.
-   public static int getRandInt(int bound) {
-      return ThreadLocalRandom.current().nextInt(bound);
-   }
-
-   public static int getRandInt(int lower, int bound) {
-      return ThreadLocalRandom.current().nextInt(lower, bound);
-   }
 
    public static double getRandDouble(double bound) {
       return ThreadLocalRandom.current().nextDouble(bound);
