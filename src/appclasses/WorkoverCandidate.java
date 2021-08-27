@@ -135,7 +135,6 @@ public class WorkoverCandidate {
         return result;
     }
 
-    // NEED WATER SATURATION SCORE CALCULATOR
     private int waterSaturationRank() {
         Map<Integer, List<Double>> ranges = new HashMap<>();
         ranges.put(1, List.of(1.0, 0.8));
