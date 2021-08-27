@@ -26,17 +26,13 @@ public class RunVolumes {
    // Prohibit instantiation and subclassing
    private RunVolumes() {}
 
-   private static List<Number> parseParameters(String text) {
+   private static List<Double> parseParameters(String text) {
       if (text == null)
          throw new IllegalArgumentException("Check csv file for proper contents.");
-      List<Number> container = new ArrayList<>();
+      List<Double> container = new ArrayList<>();
       String[] values = text.split(",");
-      for (int i = 0; i < values.length; i++) {
-         if (i == 2 || i == 3) {
-            container.add(Integer.parseInt(values[i]));
-            continue;
-         }
-         container.add(Double.parseDouble(values[i]));
+      for (String value : values) {
+         container.add(Double.parseDouble(value));
       }
       return container;
    }
@@ -56,7 +52,7 @@ public class RunVolumes {
    public static void main(String[] args) {
       Path file = pf.dataFolder.resolve(
            pf.resource.getString("data.file"));
-      List<Number> parameters = parseParameters(loadParameters(file));
+      List<Double> parameters = parseParameters(loadParameters(file));
       List<Double> results = new ArrayList<>();
       Scanner s = new Scanner(System.in);
       System.out.print("How many runs would you like to conduct? ");
