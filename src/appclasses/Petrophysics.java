@@ -15,13 +15,15 @@ public class Petrophysics {
      */
     public static double waterSaturation(double n, double rw, double phi,
                                          double m, double rf) {
+        int lowerLimit = 0;
+        int upperLimit = 1;
         double value = rw / (Math.pow(phi, m) * rf);
-        if (value < 0)
+        if (value < lowerLimit)
             throw new IllegalArgumentException("Negative parameters are invalid for this calculation");
         value = Math.pow(value, (1 / n));
 
         double result = Math.round(value * 100) / 100.0;
-        if (result < 0 || result > 1)
+        if (result < lowerLimit || result > upperLimit)
             throw new IllegalArgumentException("Check parameters for validity.");
         return result;
     }
