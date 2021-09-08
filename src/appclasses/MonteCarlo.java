@@ -9,9 +9,11 @@ public class MonteCarlo {
    // Ideally this should be useful for evaluating the average result with
    // many tens or hundreds of runs.
    public static int runSpinner(int chance) {
-      if (chance < 1 || chance > 99)
+      int lowestChance = 1;
+      int highestChance = 99;
+      if (chance < lowestChance || chance > highestChance)
          throw new IllegalArgumentException("Chance of success must be between 0 and 100, exclusive.");
-      int probability = ThreadLocalRandom.current().nextInt(1, 100);
+      int probability = ThreadLocalRandom.current().nextInt(lowestChance, highestChance + 1);
       if (probability <= chance) {
          System.out.println("Success!");
          return 1;
