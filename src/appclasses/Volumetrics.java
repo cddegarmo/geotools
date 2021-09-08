@@ -14,9 +14,9 @@ public class Volumetrics {
     public static double oilInPlace(double area, double thickness,
                                         double oilSaturation, double porosity,
                                         double volumeFactor) {
-
+        int lowerLimit = 0;
         double value = BBLS * area * thickness * oilSaturation * porosity;
-        if (value < 0 || volumeFactor < 0)
+        if (value < lowerLimit || volumeFactor < lowerLimit)
             throw new IllegalArgumentException("Negative parameters are invalid for this calculation");
         value /= volumeFactor;
 
@@ -47,9 +47,9 @@ public class Volumetrics {
     public static double gasInPlace(double area, double thickness,
                                     double gasSaturation, double porosity,
                                     double volumeFactor) {
-
+        int lowerLimit = 0;
         double value = MCF * area * thickness * gasSaturation * gasSaturation * porosity;
-        if (value < 0 || volumeFactor < 0)
+        if (value < lowerLimit || volumeFactor < lowerLimit)
             throw new IllegalArgumentException("Negative parameters are invalid for this calculation");
         value /= volumeFactor;
 
@@ -71,9 +71,9 @@ public class Volumetrics {
     // Generally only used to evaluate potential for water disposal, or as an academic exercise
     public static double waterInPlace(double area, double thickness,
                                       double porosity) {
-
+        int lowerLimit = 0;
         double value = BBLS * area * thickness * porosity;
-        if (value < 0)
+        if (value < lowerLimit)
             throw new IllegalArgumentException("Negative parameters are invalid for this calculation");
 
         return Math.round(value * 100) / 100.0;
@@ -87,7 +87,8 @@ public class Volumetrics {
 
     // Rough calculation of remaining reserves in a conventional well
     private static int getRemainingVolume(int lastYearProduction) {
-        return lastYearProduction * 7;
+        int productionFactor = 7;
+        return lastYearProduction * productionFactor;
     }
 
     // Calculate EUR of a well by summing the cumulative production with remaining potential
