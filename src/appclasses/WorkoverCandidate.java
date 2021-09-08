@@ -72,10 +72,13 @@ public class WorkoverCandidate {
 
 
     private final double getScore() {
-        double result = (injRank() * 0.25) +
-                     (porosityRank() * 0.25) +
-                     (netPayRank() * 0.2) +
-                     (waterSaturationRank() * 0.3);
+        double quarterWeight = 0.25;
+        double fifthWeight = 0.2;
+        double thirtyWeight = 0.3;
+        double result = (injRank() * quarterWeight) +
+                     (porosityRank() * quarterWeight) +
+                     (netPayRank() * fifthWeight) +
+                     (waterSaturationRank() * thirtyWeight);
         return Math.round(result * 100) / 100.0;
     }
 
@@ -84,13 +87,17 @@ public class WorkoverCandidate {
     }
 
     private static boolean porosityUnrealistic(double porosity) {
-        if (porosity > 0.3 || porosity < 0.0)
+        double lowerBound = 0.0;
+        double upperBound = 0.3;
+        if (porosity > upperBound || porosity < lowerBound)
             return true;
         return false;
     }
 
     private static boolean waterSaturationUnrealistic(double waterSaturation) {
-        if (waterSaturation > 1.0 || waterSaturation < 0.01)
+        double lowerBound = 0.01;
+        double upperBound = 1.0;
+        if (waterSaturation > upperBound || waterSaturation < lowerBound)
             return true;
         return false;
     }
