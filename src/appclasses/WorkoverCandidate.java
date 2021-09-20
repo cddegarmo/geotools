@@ -31,7 +31,7 @@ public class WorkoverCandidate {
 
     public static WorkoverCandidate add(int number, int footage,
                                         int injs, double poro) {
-        if(porosityUnrealistic(poro))
+        if (RankUtility.porosityUnrealistic(poro))
             throw new IllegalStateException("Porosity values unrealistic. Please modify and try again.");
         else
             return new WorkoverCandidate(number, footage, injs, poro);
@@ -39,9 +39,9 @@ public class WorkoverCandidate {
 
     public static WorkoverCandidate add(int number, int footage,
                                         int injs, double poro, double sw) {
-        if(porosityUnrealistic(poro))
+        if (RankUtility.porosityUnrealistic(poro))
             throw new IllegalStateException("Porosity values unrealistic. Please modify and try again.");
-        else if(waterSaturationUnrealistic(sw))
+        else if (RankUtility.waterSaturationUnrealistic(sw))
             throw new IllegalStateException("Water saturation value unrealistic. Please modify and try again");
         else
             return new WorkoverCandidate(number, footage, injs, poro, sw);
@@ -58,27 +58,27 @@ public class WorkoverCandidate {
     // Sort without water saturation influence, importance is placed heavily
     // on number of adjacent injectors
     public static final Comparator<WorkoverCandidate> COMPLETION_ORDER =
-            comparingInt(WorkoverCandidate::getAdjacent)
-            .thenComparingInt(WorkoverCandidate::getNetPay)
-            .thenComparingDouble(WorkoverCandidate::getPorosity)
-                    .reversed();
+         comparingInt(WorkoverCandidate::getAdjacent)
+              .thenComparingInt(WorkoverCandidate::getNetPay)
+              .thenComparingDouble(WorkoverCandidate::getPorosity)
+              .reversed();
 
     // Comparator #2
     // Use weighted sorting, incorporating all fields of class. Should be
     // modified on a field-by-field basis
     public static final Comparator<WorkoverCandidate> WEIGHTED_ORDER =
-            comparingDouble(WorkoverCandidate::getScore)
-            .reversed();
+         comparingDouble(WorkoverCandidate::getScore)
+              .reversed();
 
 
-    private final double getScore() {
+    private double getScore() {
         double quarterWeight = 0.25;
         double fifthWeight = 0.2;
         double thirtyWeight = 0.3;
         double result = (injRank() * quarterWeight) +
-                     (porosityRank() * quarterWeight) +
-                     (netPayRank() * fifthWeight) +
-                     (waterSaturationRank() * thirtyWeight);
+             (RankUtility.porosityRank(porosity) * quarterWeight) +
+             (RankUtility.netPayRank(netPay) * fifthWeight) +
+             (RankUtility.waterSaturationRank(waterSaturation) * thirtyWeight);
         return Math.round(result * 100) / 100.0;
     }
 
@@ -86,88 +86,12 @@ public class WorkoverCandidate {
         return adjacentInjectors;
     }
 
-    private static boolean porosityUnrealistic(double porosity) {
-        double lowerBound = 0.0;
-        double upperBound = 0.3;
-        if (porosity > upperBound || porosity < lowerBound)
-            return true;
-        return false;
-    }
-
-    private static boolean waterSaturationUnrealistic(double waterSaturation) {
-        double lowerBound = 0.01;
-        double upperBound = 1.0;
-        if (waterSaturation > upperBound || waterSaturation < lowerBound)
-            return true;
-        return false;
-    }
-
-    private int porosityRank() {
-        Map<Integer, List<Double>> ranges = new HashMap<>();
-        ranges.put(1, List.of(0.0, 0.05));
-        ranges.put(2, List.of(0.06, 0.1));
-        ranges.put(3, List.of(0.11, 0.15));
-        ranges.put(4, List.of(0.16, 0.2));
-        ranges.put(5, List.of(0.21, 0.3));
-        List<Double> range = ranges.values()
-             .stream()
-             .filter(list -> porosity <= list.get(1) &&
-                  porosity >= list.get(0))
-             .findAny()
-             .orElse(new ArrayList<>());
-        int result = 0;
-        for (Integer score : ranges.keySet())
-            if (ranges.get(score) == range)
-                result = score;
-        return result;
-    }
-
-    private int netPayRank() {
-        Map<Integer, List<Integer>> ranges = new HashMap<>();
-        ranges.put(1, List.of(0, 10));
-        ranges.put(2, List.of(11, 20));
-        ranges.put(3, List.of(21, 30));
-        ranges.put(4, List.of(31, 40));
-        ranges.put(5, List.of(41, 100));
-        List<Integer> range = ranges.values()
-             .stream()
-             .filter(list -> netPay <= list.get(1) &&
-                  netPay >= list.get(0))
-             .findAny()
-             .orElse(new ArrayList<>());
-        int result = 0;
-        for (Integer score : ranges.keySet())
-            if (ranges.get(score) == range)
-                result = score;
-        return result;
-    }
-
-    private int waterSaturationRank() {
-        Map<Integer, List<Double>> ranges = new HashMap<>();
-        ranges.put(1, List.of(1.0, 0.8));
-        ranges.put(2, List.of(0.79, 0.6));
-        ranges.put(3, List.of(0.59, 0.4));
-        ranges.put(4, List.of(0.39, 0.2));
-        ranges.put(5, List.of(0.19, 0.0));
-        List<Double> range = ranges.values()
-             .stream()
-             .filter(list -> waterSaturation <= list.get(1) &&
-                  waterSaturation >= list.get(0))
-             .findAny()
-             .orElse(new ArrayList<>());
-        int result = 0;
-        for (Integer score : ranges.keySet())
-            if (ranges.get(score) == range)
-                result = score;
-        return result;
-    }  
-
     // Standard overrides of methods inherited from Object
     @Override
     public boolean equals(Object o) {
-        if(o == this)
+        if (o == this)
             return true;
-        if(!(o instanceof WorkoverCandidate))
+        if (!(o instanceof WorkoverCandidate))
             return false;
         WorkoverCandidate wc = (WorkoverCandidate) o;
         return wc.wellNumber == wellNumber && wc.netPay == netPay;
