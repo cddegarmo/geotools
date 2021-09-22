@@ -9,6 +9,17 @@ public class RankUtility {
 
    private RankUtility() {}
 
+   private static <T extends Number & Comparable<T>> List<T> retrieveRange(Map<Integer, List<T>> ranges,
+                                                                           T value) {
+      List<T> range = ranges.values()
+                            .stream()
+                            .filter(list -> value.compareTo(list.get(1)) <= 0 &&
+                                 value.compareTo(list.get(0)) >= 0)
+                            .findAny()
+                            .orElse(new ArrayList<>());
+      return range;
+   }
+
    public static boolean porosityUnrealistic(double porosity) {
       double lowerBound = 0.0;
       double upperBound = 0.3;
@@ -32,12 +43,7 @@ public class RankUtility {
       ranges.put(3, List.of(0.11, 0.15));
       ranges.put(4, List.of(0.16, 0.2));
       ranges.put(5, List.of(0.21, 0.3));
-      List<Double> range = ranges.values()
-                                 .stream()
-                                 .filter(list -> porosity <= list.get(1) &&
-                                      porosity >= list.get(0))
-                                 .findAny()
-                                 .orElse(new ArrayList<>());
+      List<Double> range = retrieveRange(ranges, porosity);
       int result = 0;
       for (Integer score : ranges.keySet())
          if (ranges.get(score) == range)
@@ -52,12 +58,7 @@ public class RankUtility {
       ranges.put(3, List.of(21, 30));
       ranges.put(4, List.of(31, 40));
       ranges.put(5, List.of(41, 100));
-      List<Integer> range = ranges.values()
-                                  .stream()
-                                  .filter(list -> netPay <= list.get(1) &&
-                                       netPay >= list.get(0))
-                                  .findAny()
-                                  .orElse(new ArrayList<>());
+      List<Integer> range = retrieveRange(ranges, netPay);
       int result = 0;
       for (Integer score : ranges.keySet())
          if (ranges.get(score) == range)
@@ -67,17 +68,12 @@ public class RankUtility {
 
    public static int waterSaturationRank(double waterSaturation) {
       Map<Integer, List<Double>> ranges = new HashMap<>();
-      ranges.put(1, List.of(1.0, 0.8));
-      ranges.put(2, List.of(0.79, 0.6));
-      ranges.put(3, List.of(0.59, 0.4));
-      ranges.put(4, List.of(0.39, 0.2));
-      ranges.put(5, List.of(0.19, 0.0));
-      List<Double> range = ranges.values()
-                                 .stream()
-                                 .filter(list -> waterSaturation <= list.get(1) &&
-                                      waterSaturation >= list.get(0))
-                                 .findAny()
-                                 .orElse(new ArrayList<>());
+      ranges.put(1, List.of(0.8, 1.0));
+      ranges.put(2, List.of(0.6, 0.79));
+      ranges.put(3, List.of(0.4, 0.59));
+      ranges.put(4, List.of(0.2, 0.39));
+      ranges.put(5, List.of(0.0, 0.19));
+      List<Double> range = retrieveRange(ranges, waterSaturation);
       int result = 0;
       for (Integer score : ranges.keySet())
          if (ranges.get(score) == range)
